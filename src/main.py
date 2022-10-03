@@ -42,6 +42,7 @@ while not agent.check_is_game_over():
         selected_move = str(chess_util.get_random_legal_move(board))
         print(selected_move)
 
+        time.sleep(0.7)
         agent.make_move(selected_move)
 
         #time.sleep(5)
