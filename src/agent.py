@@ -24,9 +24,7 @@ class Agent:
         self.driver.get(url)
         print('Url loaded.')
 
-    def start_match_from_main_url(self):
-        # ----- Click Play -----
-        time.sleep(1)
+    def click_main_play_btn(self):
         try:
             play_btn = self.driver.find_element(By.XPATH, "//button[@data-cy='new-game-index-play']")
             print('Play button found.')
@@ -35,8 +33,13 @@ class Agent:
         except NoSuchElementException:
             print('Play button not found')
 
+    def start_match_from_main_url(self):
+        # ----- Click Play -----
+        time.sleep(0.5)
+        self.click_main_play_btn()
+
         # ----- Choose difficulty -----
-        time.sleep(1)
+        time.sleep(0.5)
         try:
             difficulty = 'advanced' # new, beginner, intermediate, advanced
             difficulty_btn = self.driver.find_element(By.XPATH, f"//label[@for='{difficulty}']")
@@ -47,7 +50,7 @@ class Agent:
             print('Difficulty button not found')
 
         # ----- Click Play as Guest -----
-        time.sleep(1)
+        time.sleep(0.5)
         try:
             play_guest_btn = self.driver.find_element(By.ID, "guest-button")
             print('Play as Guest button found.')
