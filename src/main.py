@@ -1,6 +1,8 @@
 import time
 import chess
 
+import chess_util
+
 from agent import Agent
 
 agent = Agent()
@@ -20,14 +22,32 @@ if attempts_remaining == 0:
     agent.close_window()
     quit()
 
+# ----- Game Setup -----
+board = chess.Board()
+if not agent.is_agent_white():
+    board.turn = chess.BLACK
+
 # ----- Start playing -----
 while not agent.check_is_game_over():
-    board = chess.Board()
-    #print(agent.read_board())
+    if agent.has_turn():
+        # update board
+        fen = agent.read_board()
+        board = chess.Board(fen)
+        if not agent.is_agent_white():
+            board.turn = chess.BLACK
+        
+        print(fen)
 
-    time.sleep(5)
-    agent.close_window()
-    quit()
+        # for now we'll play with random legal moves
+        selected_move = chess_util.get_random_legal_move(board)
+        print(selected_move)
+
+
+        #agent.make_move(2,2)
+
+        time.sleep(5)
+        agent.close_window()
+        quit()
 
 
 # ----- Game Over -----
