@@ -24,7 +24,7 @@ class Agent:
         self.action = ActionChains(self.driver)
 
         # ----- Open window -----
-        #self.driver.set_window_size(1000,800)
+        self.driver.set_window_size(1400,700)
         self.driver.set_window_position(0, 0)
         url = "https://www.chess.com/play/online"
         self.driver.get(url)
@@ -118,27 +118,28 @@ class Agent:
             return False
 
     def make_move(self, move):
-        try:
-            piece_size = self.driver.find_element(By.CSS_SELECTOR, "#board-layout-chessboard").size["height"]/8
-
-            origin = chess_util.get_square_location(move[:2])
-            target = chess_util.get_square_location(move[2:4])
-            offset_x = piece_size * (int(target[0]) - int(origin[0])) + 5
-            offset_y = piece_size * (int(target[1]) - int(origin[1])) + 5
-            if self.is_agent_white():
-                offset_y *= -1
-            else:
-                offset_x *= -1
-
+        if move:
             try:
-                origin_push = self.driver.find_element(By.CLASS_NAME, f"square-{origin[0]}{origin[1]}")
-                self.action.drag_and_drop_by_offset(origin_push, offset_x, offset_y).perform()
-                
-            except ElementNotInteractableException:
-                print('Could not interact')            
+                piece_size = self.driver.find_element(By.CSS_SELECTOR, "#board-layout-chessboard").size["height"]/8
 
-        except NoSuchElementException:
-            print('Could not make that move')
+                origin = chess_util.get_square_location(move[:2])
+                target = chess_util.get_square_location(move[2:4])
+                offset_x = piece_size * (int(target[0]) - int(origin[0])) + 5
+                offset_y = piece_size * (int(target[1]) - int(origin[1])) + 5
+                if self.is_agent_white():
+                    offset_y *= -1
+                else:
+                    offset_x *= -1
+
+                try:
+                    origin_push = self.driver.find_element(By.CLASS_NAME, f"square-{origin[0]}{origin[1]}")
+                    self.action.drag_and_drop_by_offset(origin_push, offset_x, offset_y).perform()
+                    
+                except ElementNotInteractableException:
+                    print('Could not interact')            
+
+            except NoSuchElementException:
+                print('Could not make that move')
 
     def has_turn(self):
         try:
