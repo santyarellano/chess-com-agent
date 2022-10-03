@@ -111,3 +111,34 @@ class Agent:
         except NoSuchElementException:
             return False
 
+    def make_move(self, origin, target):
+        try:
+            piece_size = self.driver.find_element(By.CSS_SELECTOR, "#board-layout-chessboard").size["height"]/8
+            origin_push = self.driver.find_element(By.XPATH, f"//div[contains(@class, 'piece') and contains(@class, 'square-{origin[0]}{origin[1]}')]")
+        except NoSuchElementException:
+            print('Could not make that move')
+
+    def has_turn(self):
+        try:
+            player_board_layout = self.driver.find_element(By.ID, "board-layout-player-bottom")
+            try:
+                player_board_layout.find_element(By.CLASS_NAME, "clock-player-turn")
+                return True
+            except NoSuchElementException:
+                return False
+        except NoSuchElementException:
+            print('Could not check for turn.')
+            return False
+
+    def is_agent_white(self):
+        try:
+            player_board_layout = self.driver.find_element(By.ID, "board-layout-player-bottom")
+            try:
+                player_board_layout.find_element(By.CLASS_NAME, "clock-white")
+                return True
+            except NoSuchElementException:
+                return False
+        except NoSuchElementException:
+            print('Could not get color.')
+            return 'NA'
+
