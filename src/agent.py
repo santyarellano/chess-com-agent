@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import ElementNotInteractableException
 import platform
 import time
 import chess_util
@@ -118,13 +119,21 @@ class Agent:
 
             origin = chess_util.get_square_location(move[:2])
             target = chess_util.get_square_location(move[2:4])
-            offset_x = piece_size * (int(target[0]) - int(origin[0]))
-            offset_y = piece_size * (int(target[1]) - int(origin[1]))
+            offset_x = piece_size * (int(target[0]) - int(origin[0])) + 5
+            offset_y = piece_size * (int(target[1]) - int(origin[1])) + 5
             if self.is_agent_white():
                 offset_y *= -1
 
-            origin_push = self.driver.find_element(By.CLASS_NAME, f"square-{origin[0]}{origin[1]}")
-            self.action.drag_and_drop_by_offset(origin_push, offset_x, offset_y).perform()
+            attempts_left = 5
+            while attempts_left > 0:
+                try:
+                    origin_push = self.driver.find_element(By.CLASS_NAME, f"square-{origin[0]}{origin[1]}")
+                    self.action.drag_and_drop_by_offset(origin_push, offset_x, offset_y).perform()
+                    attempts_left = 0
+                except ElementNotInteractableException:
+                    attempts_left -= 1
+                    time.sleep(1)
+                    print('Could not interact')            
 
         except NoSuchElementException:
             print('Could not make that move')
