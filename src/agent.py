@@ -3,6 +3,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import ElementNotInteractableException
+from selenium.webdriver.edge.service import Service as EdgeService
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
 import platform
 import time
 import chess_util
@@ -12,15 +14,17 @@ class Agent:
     def init_window(self):
         # ----- Detect OS and web driver -----
         os = platform.system()
+        print(f"OS detected: {os}")
         if os == 'Darwin': # Using Mac OS
-            print(f"OS detected: {os}")
             self.driver = webdriver.Safari()
+        elif os == 'Windows':
+            self.driver = webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
 
         # ----- Other setup -----
         self.action = ActionChains(self.driver)
 
         # ----- Open window -----
-        self.driver.set_window_size(1000,800)
+        #self.driver.set_window_size(1000,800)
         self.driver.set_window_position(0, 0)
         url = "https://www.chess.com/play/online"
         self.driver.get(url)
@@ -123,17 +127,15 @@ class Agent:
             offset_y = piece_size * (int(target[1]) - int(origin[1])) + 5
             if self.is_agent_white():
                 offset_y *= -1
+            else:
+                offset_x *= -1
 
-            attempts_left = 5
-            while attempts_left > 0:
-                try:
-                    origin_push = self.driver.find_element(By.CLASS_NAME, f"square-{origin[0]}{origin[1]}")
-                    self.action.drag_and_drop_by_offset(origin_push, offset_x, offset_y).perform()
-                    attempts_left = 0
-                except ElementNotInteractableException:
-                    attempts_left -= 1
-                    time.sleep(1)
-                    print('Could not interact')            
+            try:
+                origin_push = self.driver.find_element(By.CLASS_NAME, f"square-{origin[0]}{origin[1]}")
+                self.action.drag_and_drop_by_offset(origin_push, offset_x, offset_y).perform()
+                
+            except ElementNotInteractableException:
+                print('Could not interact')            
 
         except NoSuchElementException:
             print('Could not make that move')
