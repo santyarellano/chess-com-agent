@@ -39,15 +39,14 @@ while not agent.check_is_game_over():
         print(fen)
 
         # for now we'll play with random legal moves
-        selected_move = chess_util.get_random_legal_move(board)
+        selected_move = str(chess_util.get_random_legal_move(board))
         print(selected_move)
 
+        agent.make_move(selected_move)
 
-        #agent.make_move(2,2)
-
-        time.sleep(5)
-        agent.close_window()
-        quit()
+        #time.sleep(5)
+        #agent.close_window()
+        #quit()
 
 
 # ----- Game Over -----

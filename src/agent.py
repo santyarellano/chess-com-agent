@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 import platform
 import time
+import chess_util
 
 class Agent:
 
@@ -111,10 +112,18 @@ class Agent:
         except NoSuchElementException:
             return False
 
-    def make_move(self, origin, target):
+    def make_move(self, move):
         try:
             piece_size = self.driver.find_element(By.CSS_SELECTOR, "#board-layout-chessboard").size["height"]/8
-            origin_push = self.driver.find_element(By.XPATH, f"//div[contains(@class, 'piece') and contains(@class, 'square-{origin[0]}{origin[1]}')]")
+
+            origin = chess_util.get_square_location(move[:2])
+            target = chess_util.get_square_location(move[2:4])
+            offset_x = piece_size * (int(target[0]) - int(origin[0]))
+            offset_y = -piece_size * (int(target[1]) - int(origin[1]))
+
+            origin_push = self.driver.find_element(By.CLASS_NAME, f"square-{origin[0]}{origin[1]}")
+            self.action.drag_and_drop_by_offset(origin_push, offset_x, offset_y).perform()
+
         except NoSuchElementException:
             print('Could not make that move')
 
