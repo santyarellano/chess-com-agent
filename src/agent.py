@@ -118,7 +118,7 @@ class Agent:
             return False
 
     def make_move(self, move):
-        if move:
+        if move != 'None':
             try:
                 piece_size = self.driver.find_element(By.CSS_SELECTOR, "#board-layout-chessboard").size["height"]/8
 
@@ -132,11 +132,11 @@ class Agent:
                     offset_x *= -1
 
                 try:
-                    origin_push = self.driver.find_element(By.CLASS_NAME, f"square-{origin[0]}{origin[1]}")
+                    origin_push = self.driver.find_element(By.XPATH, f"//div[contains(@class, 'piece') and contains(@class, 'square-{origin[0]}{origin[1]}')]")
                     self.action.drag_and_drop_by_offset(origin_push, offset_x, offset_y).perform()
                     
-                except ElementNotInteractableException:
-                    print('Could not interact')            
+                except ElementNotInteractableException as e:
+                    print(f'Could not interact: {str(e)}')            
 
             except NoSuchElementException:
                 print('Could not make that move')
