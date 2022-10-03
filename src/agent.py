@@ -103,3 +103,11 @@ class Agent:
             nums = 0
             fen += "/"
         return fen[:-1]
+
+    def check_is_game_over(self):
+        try:
+            game_over_modal = self.driver.find_element(By.CLASS_NAME, "game-over-modal-content")
+            return True
+        except NoSuchElementException:
+            return False
+

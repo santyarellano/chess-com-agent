@@ -20,10 +20,20 @@ if attempts_remaining == 0:
     agent.close_window()
     quit()
 
-# Start playing
-board = chess.Board()
-print(agent.read_board())
+# ----- Start playing -----
+while not agent.check_is_game_over():
+    board = chess.Board()
+    #print(agent.read_board())
 
+    time.sleep(5)
+    agent.close_window()
+    quit()
+
+
+# ----- Game Over -----
+print('Game over')
 time.sleep(5)
 agent.close_window()
 quit()
+
+# clock-player-turn
