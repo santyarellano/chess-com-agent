@@ -57,3 +57,46 @@ class Agent:
 
     def close_window(self):
         self.driver.close()
+
+    def verify_existing_opponent(self):
+        try:
+            opponent_name = self.driver.find_element(By.CLASS_NAME, "user-username-link")
+            #print('Opponent tagline found.')
+            tag = opponent_name.get_attribute('innerHTML')
+            return tag != 'Opponent'
+        except NoSuchElementException:
+            print('Opponent HTML not found.')
+            return False
+
+    def wait_n_secs_for_match_to_start(self, secs):
+        for _ in range(secs):
+            if self.verify_existing_opponent():
+                print('Match started.')
+                return True
+            else:
+                time.sleep(1)
+        print('Match was not created.')
+        return False
+
+    def read_board(self):
+        fen = ""
+        for i in range(8, 0, -1):
+            nums = 0
+            for j in range(1, 9):
+                try:
+                    piece = self.driver.find_element(By.XPATH, f"//div[contains(@class, 'piece') and contains(@class, 'square-{j}{i}')]")
+                    fen += str(nums) if nums != 0 else ""
+                    nums = 0
+                    if piece.get_attribute("class").split()[1][0] != "s":
+                        piece_name = piece.get_attribute("class").split()[1]
+                    else:
+                        piece_name = piece.get_attribute("class").split()[2]
+
+                    fen += piece_name[1].upper() if piece_name[0] == "w" else piece_name[1].lower()
+                except:
+                    nums += 1
+
+            fen += str(nums) if nums != 0 else ""
+            nums = 0
+            fen += "/"
+        return fen[:-1]
