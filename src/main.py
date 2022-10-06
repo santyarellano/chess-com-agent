@@ -28,25 +28,26 @@ if not agent.is_agent_white():
     board.turn = chess.BLACK
 
 # ----- Start playing -----
-while not agent.check_is_game_over():
-    if agent.has_turn():
-        
-        # update board
-        fen = agent.read_board()
-        board = chess.Board(fen)
-        if not agent.is_agent_white():
-            board.turn = chess.BLACK
+for i in range(0, 5):
+    while not agent.check_is_game_over():
+        if agent.has_turn():
+            
+            # update board
+            fen = agent.read_board()
+            board = chess.Board(fen)
+            if not agent.is_agent_white():
+                board.turn = chess.BLACK
 
-        # for now we'll play with random legal moves
-        selected_move = str(chess_util.get_random_legal_move(board))
-        print(selected_move)
+            # for now we'll play with random legal moves
+            selected_move = str(chess_util.get_random_legal_move(board))
+            print(selected_move)
 
-        agent.make_move(selected_move)
+            agent.make_move(selected_move)
 
-        time.sleep(1)
-        #time.sleep(5)
-        #agent.close_window()
-        #quit()
+            time.sleep(1)
+
+    agent.click_new_10_min()
+    time.sleep(1)
 
 
 # ----- Game Over -----

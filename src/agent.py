@@ -165,3 +165,11 @@ class Agent:
             print('Could not get color.')
             return 'NA'
 
+    def click_new_10_min(self):
+        try:
+            new_10_min_btn = self.driver.find_element(By.XPATH, "//*[contains(text(), 'New 10 min')]")
+            print('Play again button found.')
+            self.action.move_to_element(new_10_min_btn).click().perform()
+            print('Clicked Play again')
+        except NoSuchElementException:
+            print('Play again button not found')
