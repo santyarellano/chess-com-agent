@@ -42,6 +42,8 @@ for i in range(0, 5):
             selected_move = str(chess_util.get_random_legal_move(board))
             print(selected_move)
 
+            print(chess_util.eval_board(fen))
+
             agent.make_move(selected_move)
 
             time.sleep(1)
