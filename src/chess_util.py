@@ -32,3 +32,8 @@ def eval_board(fen_board):
             
             val += piece
     return val
+
+def get_moves_list_at_depth(board: chess.Board, depth: int):
+    legal_moves = list(board.legal_moves)
+    if len(legal_moves) > 0:
+        pass
