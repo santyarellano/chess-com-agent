@@ -1,6 +1,8 @@
+from copy import deepcopy
 from nis import match
 import chess
 import random
+import settings
 
 def get_random_legal_move(board: chess.Board):
     legal_moves = list(board.legal_moves)
@@ -33,7 +35,32 @@ def eval_board(fen_board):
             val += piece
     return val
 
-def get_moves_list_at_depth(board: chess.Board, depth: int):
+def minmax(board: chess.Board, depth: int):
     legal_moves = list(board.legal_moves)
-    if len(legal_moves) > 0:
-        pass
+
+    if len(legal_moves) > 0: 
+        best_move = None
+        best_move_eval = None
+        for move in legal_moves:
+            temp_board = deepcopy(board)
+            temp_board.push(move)
+            fen_temp_board = temp_board.board_fen()
+            board_eval = eval_board(fen_temp_board) if depth <= 1 else minmax(temp_board, depth-1)[1]
+
+            if best_move == None:
+                best_move_eval = board_eval
+                best_move = move
+                if depth == settings.minmax_depth:
+                    print(f"best future score: {best_move_eval}")
+
+            elif board_eval != None:
+                if (board.turn == chess.WHITE and board_eval > best_move_eval) or (board.turn == chess.BLACK and board_eval < best_move_eval):
+                    best_move_eval = board_eval
+                    best_move = move
+                    if depth == settings.minmax_depth:
+                        print(f"best future score: {best_move_eval}")
+        
+        return [best_move, best_move_eval]
+
+    else:
+        return [None, None]

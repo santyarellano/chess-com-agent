@@ -39,7 +39,7 @@ class Agent:
         except NoSuchElementException:
             print('Play button not found')
 
-    def start_match_from_main_url(self):
+    def start_match_from_main_url(self, difficulty):
         # ----- Click Play -----
         time.sleep(0.5)
         self.click_main_play_btn()
@@ -47,7 +47,6 @@ class Agent:
         # ----- Choose difficulty -----
         time.sleep(0.5)
         try:
-            difficulty = 'advanced' # new, beginner, intermediate, advanced
             difficulty_btn = self.driver.find_element(By.XPATH, f"//label[@for='{difficulty}']")
             print('Difficulty button found.')
             self.action.move_to_element(difficulty_btn).click().perform()

@@ -2,13 +2,14 @@ import time
 import chess
 
 import chess_util
+import settings
 
 from agent import Agent
 
 agent = Agent()
 
 agent.init_window()
-agent.start_match_from_main_url()
+agent.start_match_from_main_url(settings.difficulty)
 
 # Attempt to start match
 attempts_remaining = 5
@@ -39,10 +40,12 @@ for i in range(0, 5):
                 board.turn = chess.BLACK
 
             # for now we'll play with random legal moves
-            selected_move = str(chess_util.get_random_legal_move(board))
-            print(selected_move)
+            #selected_move = str(chess_util.get_random_legal_move(board))
+            #print(selected_move)
 
-            print(chess_util.eval_board(fen))
+            # Play using minmax
+            selected_move = str(chess_util.minmax(board, settings.minmax_depth)[0])
+            print('- - -')
 
             agent.make_move(selected_move)
 
