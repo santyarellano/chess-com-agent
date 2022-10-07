@@ -12,7 +12,7 @@ agent.init_window()
 agent.start_match_from_main_url(settings.difficulty)
 
 # Attempt to start match
-attempts_remaining = 5
+attempts_remaining = 3
 while attempts_remaining > 0 and not agent.wait_n_secs_for_match_to_start(3):
     print(f"Attempts remaining... {attempts_remaining}")
     agent.click_main_play_btn()
