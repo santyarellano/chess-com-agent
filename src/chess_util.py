@@ -53,7 +53,7 @@ def minmax(board: chess.Board, depth: int):
                 if depth == settings.minmax_depth:
                     print(f"best future score: {best_move_eval}")
 
-            elif board_eval != None:
+            elif board_eval != None and best_move_eval != None and board_eval != None:
                 if (board.turn == chess.WHITE and board_eval > best_move_eval) or (board.turn == chess.BLACK and board_eval < best_move_eval):
                     best_move_eval = board_eval
                     best_move = move

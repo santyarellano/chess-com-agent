@@ -29,7 +29,7 @@ if not agent.is_agent_white():
     board.turn = chess.BLACK
 
 # ----- Start playing -----
-for i in range(0, 5):
+for i in range(0, 50):
     while not agent.check_is_game_over():
         if agent.has_turn():
             
