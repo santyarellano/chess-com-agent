@@ -1,6 +1,14 @@
 # Welcome to the Chess.com agent!
 
-This project consists of a very simple chess agent that plays on [Chess.com](chess.com).
+This project consists of a very simple chess agent that plays on [Chess.com](chess.com). All you need to do is initialize the python project and it'll start playing by itself. It plays using a min-max strategy of depth 3 (So it won't play very well).
+
+## Dependencies
+
+In order to run the project you'll need
+
+## How it interacts with Chess.com
+
+This project 
 
 ## Resources
 
