@@ -4,7 +4,7 @@ This project consists of a very simple chess agent that plays on [Chess.com](che
 
 ## Dependencies
 
-In order to run the project you'll need
+In order to run the project you'll need to install the dependecies listed in the 'dependencies' file.
 
 ## How it interacts with Chess.com
 
